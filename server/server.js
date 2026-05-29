@@ -61,7 +61,7 @@ io.on("connection", (socket) => {
 
   socket.on("join_room", ({ roomId, username }) => {
     socket.join(roomId)
-
+console.log("USER JOINED:", username, roomId)
     if (!rooms[roomId]) {
       rooms[roomId] = {
         secretWord: getDailyWord(),
@@ -81,7 +81,8 @@ io.on("connection", (socket) => {
 socket.on("guess", async ({ roomId, word }) => {
     const room = rooms[roomId]
     const normalized = word.trim().toLowerCase()
-
+console.log("GUESS RECEIVED:", guess)
+console.log("EMITTING TO ROOM:", roomId)
 const alreadyGuessed = room.guesses.some(
   (g) => g.word.toLowerCase() === normalized
 )
