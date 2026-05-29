@@ -28,8 +28,13 @@ function getDailyWord() {
 }
 const io = new Server(server, {
   cors: {
-    origin: "*"
-  }
+  origin: [
+    "http://localhost:3000",
+    "https://multiplayer-semantle.vercel.app"
+  ],
+  methods: ["GET", "POST"],
+  credentials: true
+}
 })
 
 const PORT = 4000
