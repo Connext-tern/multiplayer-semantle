@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react"
 import { io } from "socket.io-client"
 
-const socket = io("http://localhost:4000")
+const socket = io("https://multiplayer-semantle.onrender.com")
 
 export default function GameRoom({ roomId }) {
   const [username, setUsername] = useState("")
