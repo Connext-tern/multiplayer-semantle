@@ -79,21 +79,24 @@ console.log("USER JOINED:", username, roomId)
   })
 
 socket.on("guess", async ({ roomId, word }) => {
-    const room = rooms[roomId]
-    const normalized = word.trim().toLowerCase()
-console.log("GUESS RECEIVED:", guess)
-console.log("EMITTING TO ROOM:", roomId)
-const alreadyGuessed = room.guesses.some(
-  (g) => g.word.toLowerCase() === normalized
-)
+  const room = rooms[roomId]
+  const normalized = word.trim().toLowerCase()
 
-if (alreadyGuessed) {
-  socket.emit("duplicate_guess", {
-    word
-  })
+  console.log("GUESS RECEIVED:", word)
+  console.log("EMITTING TO ROOM:", roomId)
 
-  return
-}
+  if (!room) return
+
+  const alreadyGuessed = room.guesses.some(
+    (g) => g.word.toLowerCase() === normalized
+  )
+
+  if (alreadyGuessed) {
+    socket.emit("duplicate_guess", {
+      word
+    })
+    return
+  }
     if (!room) return
 
 const response = await axios.post(

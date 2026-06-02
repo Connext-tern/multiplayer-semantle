@@ -1,5 +1,7 @@
 import GameRoom from "../../components/GameRoom"
 
-export default function Page({ params }) {
-  return <GameRoom roomId={params.roomId} />
+export default async function Page({ params }) {
+  const { roomId } = await params
+
+  return <GameRoom roomId={roomId} />
 }
