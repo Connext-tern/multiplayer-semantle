@@ -63,12 +63,16 @@ io.on("connection", (socket) => {
     socket.join(roomId)
 console.log("USER JOINED:", username, roomId)
     if (!rooms[roomId]) {
-      rooms[roomId] = {
-        secretWord: getDailyWord(),
-        players: {},
-        guesses: []
-      }
-    }
+  rooms[roomId] = {
+    secretWord: getDailyWord(),
+    players: {},
+    guesses: []
+  }
+
+  console.log(
+    `ROOM ${roomId} SECRET WORD: ${rooms[roomId].secretWord}`
+  )
+}
 
     rooms[roomId].players[socket.id] = {
       username,
@@ -154,16 +158,25 @@ else {
     })
 
     if (score === 100) {
-      io.to(roomId).emit("game_won", {
-        winner: room.players[socket.id].username,
-        word: room.secretWord
-      })
+  io.to(roomId).emit("game_won", {
+    winner: room.players[socket.id].username,
+    word: room.secretWord
+  })
 
-      room.secretWord = randomWord()
-      room.guesses = []
+  setTimeout(() => {
+  room.secretWord = randomWord()
 
-      io.to(roomId).emit("new_round")
-    }
+  console.log(
+    `NEW SECRET WORD FOR ROOM ${roomId}: ${room.secretWord}`
+  )
+
+  room.guesses = []
+
+  io.to(roomId).emit("new_round", {
+    message: "🆕 New word loaded! Start guessing!"
+  })
+}, 5000)
+}
   })
 
   socket.on("disconnect", () => {
